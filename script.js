@@ -55,6 +55,8 @@ const surnameMap = {
 
 const compoundSurnames = ['歐陽', '司馬', '上官', '諸葛'];
 const fallbackSurnames = '青木 朝日 川原 東雲 花村 星野 若松 澄川 櫻井 森下 月見 水原 春日 高橋 宮澤'.split(' ');
+const fallbackGivenNames = '春子 美子 千代子 文子 花子 和子 靜子 信子 明子 俊雄 恒一 正雄 清一 修平 春夫 直人 和也'.split(' ');
+const addedNameCharacters = '子 雄 郎 美 夫 也 人'.split(' ');
 const storageKey = 'suzuran-name-registration';
 
 const form = document.querySelector('#name-form');
@@ -83,8 +85,11 @@ function convertName(name) {
   const choice = surnameMap[surname] && pick(surnameMap[surname]);
   if (choice) return { converted: choice + (givenName || '子'), matched: true, sourceSurname: surname };
 
-  const retained = Array.from(givenName || surname).find((character) => /[\u3400-\u9fff]/u.test(character)) || '子';
-  return { converted: pick(fallbackSurnames) + retained, matched: false, sourceSurname: surname };
+  const retained = Array.from(givenName || surname).find((character) => /[\u3400-\u9fff]/u.test(character));
+  const fallbackName = retained
+    ? pick([retained, retained + pick(addedNameCharacters), pick(fallbackGivenNames)])
+    : pick(fallbackGivenNames);
+  return { converted: pick(fallbackSurnames) + fallbackName, matched: false, sourceSurname: surname };
 }
 
 function showResult(record, shouldScroll = true) {
@@ -93,7 +98,7 @@ function showResult(record, shouldScroll = true) {
   welcomeTitle.textContent = `${record.converted}，歡迎來到臺中舊城區`;
   methodNote.textContent = record.matched
     ? `依「${record.sourceSurname}」姓改姓對照，本所本次登記為「${record.converted}」。再次送交可重新抽取其他候選姓氏。`
-    : `本所未收錄「${record.sourceSurname}」姓，暫以通用內地式姓氏登記，並保留原名中的一個字。`;
+    : `本所未收錄「${record.sourceSurname}」姓，暫以通用內地式姓名登記；原名一字可能保留、添字，或另行抽取登記名。`;
   resultPanel.hidden = false;
   copyStatus.textContent = '';
   if (shouldScroll) resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
