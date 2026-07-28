@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#34281d" />
+  <meta name="description" content="《翻閱1938》活動用內地式登記名產生器" />
+  <title>臺中市役所｜改姓名受理所</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="site-shell">
+    <header class="masthead">
+      <div class="office-mark" aria-hidden="true">臺中<br />市役所</div>
+      <div>
+        <p class="kicker">昭和十三年度・臨時調查員改姓名受付</p>
+        <h1>臺中市役所</h1>
+        <p class="department">庶務課・戶籍係</p>
+      </div>
+      <span class="document-number">庶務秘<br />第〇一號</span>
+    </header>
+
+    <section class="hero" aria-labelledby="page-title">
+      <img class="hero-flower" src="./assets/lily.png" alt="" aria-hidden="true" />
+      <div class="hero-copy">
+        <p class="eyebrow">NAME REGISTRATION ・ 1938</p>
+        <h2 id="page-title">改姓名<br class="mobile-break" />受理所</h2>
+        <p>填入你的真實姓名，由戶籍係依活動對照資料製作一份專屬的內地式登記名。</p>
+      </div>
+      <img class="hero-building" src="./assets/shiyakushodraw.png" alt="臺中市役所插畫" />
+    </section>
+
+    <section class="paper-panel" id="registration-section">
+      <div class="panel-heading">
+        <div>
+          <p>臨時調查員身分登記票</p>
+          <h2>姓名登記申請</h2>
+        </div>
+        <div class="stamp" aria-hidden="true">改姓名<br />受理</div>
+      </div>
+
+      <form id="name-form" novalidate>
+        <label for="real-name">原姓名</label>
+        <div class="input-row">
+          <input id="real-name" name="real-name" type="text" inputmode="text" autocomplete="name" maxlength="8" placeholder="請輸入真實姓名" required />
+          <button class="primary-button" type="submit">送交審查</button>
+        </div>
+        <p class="form-help">請輸入 2 至 8 個中文字；空格會自動移除。</p>
+        <p id="form-error" class="form-error" role="alert" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="result-panel" id="result-panel" hidden aria-live="polite">
+      <div class="result-header">
+        <p>改姓名處理結果</p>
+        <span>照合濟</span>
+      </div>
+
+      <div class="name-conversion">
+        <div>
+          <small>原姓名</small>
+          <strong id="original-name"></strong>
+        </div>
+        <span class="arrow" aria-hidden="true">→</span>
+        <div>
+          <small>內地式登記名</small>
+          <strong id="converted-name"></strong>
+        </div>
+      </div>
+
+      <div class="welcome-copy">
+        <p class="eyebrow">REGISTRATION COMPLETE</p>
+        <h2 id="welcome-title"></h2>
+        <p id="method-note"></p>
+        <p>歡迎來到臺中舊城區。讓我們一起走進街區，開始續寫你的導覽遊記吧。</p>
+      </div>
+
+      <div class="result-actions">
+        <button class="primary-button" type="button" id="copy-button">複製登記名</button>
+        <button class="secondary-button" type="button" id="retry-button">更正原姓名</button>
+      </div>
+      <p id="copy-status" class="copy-status" aria-live="polite"></p>
+    </section>
+
+    <aside class="notice" aria-label="使用說明">
+      <h2>受付須知</h2>
+      <ol>
+        <li>相同姓名會得到相同結果，方便活動中再次查詢。</li>
+        <li>姓名只保存在目前使用的裝置，不會上傳到伺服器。</li>
+        <li>本功能為活動情境演算，並非戶籍變更或正式命名服務。</li>
+      </ol>
+      <button class="text-button" type="button" id="clear-button">清除本機登記紀錄</button>
+    </aside>
+
+    <footer>
+      <p>《翻閱1938：那些待續的章節》情境工具</p>
+      <p>臺中市役所・庶務課文書係</p>
+    </footer>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
