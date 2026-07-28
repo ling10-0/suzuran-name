@@ -80,16 +80,19 @@ function splitName(name) {
   return { surname, givenName: name.slice(surname.length) };
 }
 
+function createRegisteredGivenName(givenName, surname) {
+  const retained = Array.from(givenName || surname).find((character) => /[\u3400-\u9fff]/u.test(character));
+  return retained
+    ? pick([retained, retained + pick(addedNameCharacters), pick(fallbackGivenNames)])
+    : pick(fallbackGivenNames);
+}
+
 function convertName(name) {
   const { surname, givenName } = splitName(name);
   const choice = surnameMap[surname] && pick(surnameMap[surname]);
-  if (choice) return { converted: choice + (givenName || '子'), matched: true, sourceSurname: surname };
+  if (choice) return { converted: choice + createRegisteredGivenName(givenName, surname), matched: true, sourceSurname: surname };
 
-  const retained = Array.from(givenName || surname).find((character) => /[\u3400-\u9fff]/u.test(character));
-  const fallbackName = retained
-    ? pick([retained, retained + pick(addedNameCharacters), pick(fallbackGivenNames)])
-    : pick(fallbackGivenNames);
-  return { converted: pick(fallbackSurnames) + fallbackName, matched: false, sourceSurname: surname };
+  return { converted: pick(fallbackSurnames) + createRegisteredGivenName(givenName, surname), matched: false, sourceSurname: surname };
 }
 
 function showResult(record, shouldScroll = true) {
@@ -97,7 +100,7 @@ function showResult(record, shouldScroll = true) {
   convertedName.textContent = record.converted;
   welcomeTitle.textContent = `${record.converted}，歡迎來到臺中舊城區`;
   methodNote.textContent = record.matched
-    ? `依「${record.sourceSurname}」姓改姓對照，本所本次登記為「${record.converted}」。再次送交可重新抽取其他候選姓氏。`
+    ? `依「${record.sourceSurname}」姓改姓對照，本所本次登記為「${record.converted}」。姓名可能保留一字、添字或重新抽取；再次送交可重新抽選。`
     : `本所未收錄「${record.sourceSurname}」姓，暫以通用內地式姓名登記；原名一字可能保留、添字，或另行抽取登記名。`;
   resultPanel.hidden = false;
   copyStatus.textContent = '';
