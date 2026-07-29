@@ -249,16 +249,16 @@ footer p { margin: 0; }
 @media (max-width: 660px) {
   .site-shell { border: 0; }
   .masthead { min-height: 96px; padding: 14px 16px; gap: 12px; }
-  .office-mark { width: 54px; font-size: 15px; }
-  .masthead h1 { font-size: 28px; letter-spacing: .04em; }
+  .office-mark { width: 52px; font-size: 14px; }
+  .masthead h1 { font-size: 26px; letter-spacing: .04em; }
   .masthead .kicker { display: none; }
-  .department { font-size: 13px; }
-  .document-number { font-size: 11px; }
+  .department { font-size: 12px; }
+  .document-number { font-size: 10px; }
 
   .hero { min-height: 0; padding: 46px 25px 54px; align-items: flex-start; }
   /* 手機版標題與受理說明維持單行，避免被迫拆成兩段。 */
-  .hero h2 { font-size: clamp(48px, 14vw, 62px); white-space: nowrap; letter-spacing: .015em; }
-  .hero-copy > p:last-child { max-width: 22em; font-size: 15px; line-height: 1.7; }
+  .hero h2 { font-size: clamp(44px, 13vw, 58px); white-space: nowrap; letter-spacing: .015em; }
+  .hero-copy > p:last-child { max-width: 23em; font-size: 14px; line-height: 1.7; }
   .mobile-break { display: none; }
   .hero-building { width: 77%; right: -70px; bottom: -16px; opacity: .2; }
   .hero-flower { width: 220px; left: -80px; bottom: -82px; }
@@ -266,18 +266,18 @@ footer p { margin: 0; }
   .paper-panel, .result-panel, .notice { margin: 22px 14px; padding: 20px 17px; box-shadow: 5px 6px 0 rgba(58,45,33,.11); }
   .panel-heading { align-items: flex-start; }
   .panel-heading p { white-space: nowrap; font-size: 11px; letter-spacing: .055em; }
-  .panel-heading h2 { font-size: 30px; }
-  .stamp { width: 76px; font-size: 14px; }
+  .panel-heading h2 { font-size: 28px; }
+  .stamp { width: 72px; font-size: 13px; }
   .input-row { grid-template-columns: 1fr; }
-  input { height: 56px; font-size: 16px; }
+  input { height: 54px; font-size: 15px; }
   .input-row .primary-button { width: 100%; }
 
-  .result-header span { font-size: 18px; }
+  .result-header span { font-size: 17px; }
   .name-conversion { padding: 22px 12px; grid-template-columns: 1fr; gap: 10px; }
-  .name-conversion strong { font-size: clamp(24px, 8vw, 34px); white-space: nowrap; overflow-wrap: normal; }
-  .arrow { font-size: 30px; transform: rotate(90deg); }
-  .welcome-copy h2 { font-size: 31px; }
-  .welcome-copy p:not(.eyebrow) { font-size: 15px; }
+  .name-conversion strong { font-size: clamp(23px, 7.5vw, 32px); white-space: nowrap; overflow-wrap: normal; }
+  .arrow { font-size: 28px; transform: rotate(90deg); }
+  .welcome-copy h2 { font-size: 29px; }
+  .welcome-copy p:not(.eyebrow) { font-size: 14px; }
   .result-actions { flex-direction: column; }
   .result-actions button { width: 100%; }
   footer { flex-direction: column; text-align: center; }
