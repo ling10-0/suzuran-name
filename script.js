@@ -53,6 +53,18 @@ const surnameMap = {
   麥: '廣田 麥原 勝山'.split(' '), 倪: ['兒玉'], 武: ['武田'], 點: ['廣田'], 鍊: ['竹內']
 };
 
+const regionalSurnameMap = {
+  '臺北州': {
+    陳: '桑坪 吉川 光田 島崎 田川 中里 永川 東野 東川 東間 安東 成田 永田 津田 澤田 竹田 金田 乃木田 元田 東田 東山 東'.split(' ')
+  },
+  '新竹州': {
+    陳: '東園 南鄉 大山 池田 大星 海島 岡野 北島 新原 瀨川 川島 清水 大川 太田 宮本 正川 石井 伊東 北川 三谷 大澤 北原 東澤 日下'.split(' ')
+  },
+  '臺中州': {
+    陳: '山本 武田 平山 香川 勝見 桐宮 平田 森東 青山 池島 廣山 大岡 幸田 松岡 米田 清松 龍田 永吉 新井 長田 馬元 福井 富岡 西田 本多 永村 渥美 川田 大富 吉田 木田 梅野 柳川 中島 藤山 松本 吉村 島川 松峰 川村 德田 柏村 中村 案本 下村 神田 村上 堀田 龍村 中富 町上 犬川 愛澤 鶴谷 石山 林田 高星 山園 井田 木下 內山 岡橋 南村 石川 松崗 田村 東城'.split(' ')
+  }
+};
+
 const compoundSurnames = ['歐陽', '司馬', '上官', '諸葛'];
 const fallbackSurnames = '青木 朝日 川原 東雲 花村 星野 若松 澄川 櫻井 森下 月見 水原 春日 高橋 宮澤'.split(' ');
 const fallbackGivenNames = '春子 美子 千代子 文子 花子 和子 靜子 信子 明子 俊雄 恒一 正雄 清一 修平 春夫 直人 和也'.split(' ');
@@ -71,6 +83,8 @@ const copyButton = document.querySelector('#copy-button');
 const retryButton = document.querySelector('#retry-button');
 const clearButton = document.querySelector('#clear-button');
 const copyStatus = document.querySelector('#copy-status');
+const residenceInputs = Array.from(document.querySelectorAll('input[name="residence"]'));
+const residenceName = document.querySelector('#residence-name');
 
 const pick = (choices) => choices[Math.floor(Math.random() * choices.length)];
 
@@ -80,28 +94,59 @@ function splitName(name) {
   return { surname, givenName: name.slice(surname.length) };
 }
 
-function createRegisteredGivenName(givenName, surname) {
+function createRegisteredGivenName(givenName, surname, allowOriginalCharacter = true) {
+  if (!allowOriginalCharacter) return pick(fallbackGivenNames);
   const retained = Array.from(givenName || surname).find((character) => /[\u3400-\u9fff]/u.test(character));
   return retained
     ? pick([retained, retained + pick(addedNameCharacters), pick(fallbackGivenNames)])
     : pick(fallbackGivenNames);
 }
 
-function convertName(name) {
+function convertName(name, residence) {
   const { surname, givenName } = splitName(name);
-  const choice = surnameMap[surname] && pick(surnameMap[surname]);
-  if (choice) return { converted: choice + createRegisteredGivenName(givenName, surname), matched: true, sourceSurname: surname };
+  const regionalChoices = regionalSurnameMap[residence]?.[surname];
+  const choices = regionalChoices?.length ? regionalChoices : surnameMap[surname];
+  const choice = choices && pick(choices);
+  if (choice) {
+    return {
+      converted: choice + createRegisteredGivenName(givenName, surname),
+      matched: true,
+      regionalMatch: Boolean(regionalChoices?.length),
+      sourceSurname: surname
+    };
+  }
 
-  return { converted: pick(fallbackSurnames) + createRegisteredGivenName(givenName, surname), matched: false, sourceSurname: surname };
+  return {
+    converted: pick(fallbackSurnames) + createRegisteredGivenName(givenName, surname, false),
+    matched: false,
+    regionalMatch: false,
+    sourceSurname: surname
+  };
 }
+
+function getSelectedResidence() {
+  return residenceInputs.find((radio) => radio.checked)?.value || '臺中州';
+}
+
+function syncResidenceSelection() {
+  residenceInputs.forEach((radio) => {
+    radio.closest('.residence-option')?.classList.toggle('selected', radio.checked);
+  });
+}
+
+residenceInputs.forEach((radio) => radio.addEventListener('change', syncResidenceSelection));
+syncResidenceSelection();
 
 function showResult(record, shouldScroll = true) {
   originalName.textContent = record.original;
   convertedName.textContent = record.converted;
+  residenceName.textContent = record.residence || '臺中州';
   welcomeTitle.textContent = `${record.converted}，歡迎來到臺中舊城區`;
-  methodNote.textContent = record.matched
-    ? `依「${record.sourceSurname}」姓改姓對照，本所本次登記為「${record.converted}」。姓名可能保留一字、添字或重新抽取；再次送交可重新抽選。`
-    : `本所未收錄「${record.sourceSurname}」姓，暫以通用內地式姓名登記；原名一字可能保留、添字，或另行抽取登記名。`;
+  methodNote.textContent = record.regionalMatch
+    ? `本次優先參照「${record.residence}」之「${record.sourceSurname}」姓對照資料，登記為「${record.converted}」。再次送交可重新抽選。`
+    : record.matched
+      ? `「${record.sourceSurname}」姓暫無指定州廳對照，已依通行改姓資料抽取「${record.converted}」。再次送交可重新抽選。`
+      : `本所未收錄「${record.sourceSurname}」姓，已另行抽取完整的內地式登記名「${record.converted}」。`;
   resultPanel.hidden = false;
   copyStatus.textContent = '';
   if (shouldScroll) resultPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -116,7 +161,8 @@ form.addEventListener('submit', (event) => {
     return;
   }
   errorMessage.textContent = '';
-  const record = { original: normalized, ...convertName(normalized) };
+  const residence = getSelectedResidence();
+  const record = { original: normalized, residence, ...convertName(normalized, residence) };
   localStorage.setItem(storageKey, JSON.stringify(record));
   showResult(record);
 });
@@ -130,5 +176,10 @@ clearButton.addEventListener('click', () => { localStorage.removeItem(storageKey
 
 try {
   const saved = JSON.parse(localStorage.getItem(storageKey));
+  if (saved?.residence) {
+    const savedResidence = residenceInputs.find((radio) => radio.value === saved.residence);
+    if (savedResidence) savedResidence.checked = true;
+  }
+  syncResidenceSelection();
   if (saved?.original && saved?.converted) { input.value = saved.original; showResult(saved, false); }
 } catch { localStorage.removeItem(storageKey); }

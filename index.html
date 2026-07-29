@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#34281d" />
   <meta name="description" content="翻閱1938活動用的情境改姓名登記頁。" />
   <title>改姓名登記｜臺中市役所</title>
-  <link rel="stylesheet" href="./style.css?v=20260729b" />
+  <link rel="stylesheet" href="./style.css?v=20260729c" />
 </head>
 <body>
   <main class="site-shell">
@@ -40,11 +40,31 @@
       </div>
       <form id="name-form" novalidate>
         <label for="real-name">原姓名</label>
-        <div class="input-row">
-          <input id="real-name" name="real-name" type="text" inputmode="text" autocomplete="name" maxlength="8" placeholder="請輸入姓名或綽號" required />
-          <button class="primary-button" type="submit">送交登記</button>
-        </div>
-        <p class="form-help">請輸入 2 至 8 個中文字；每次送交都會重新抽取一個可用的登記姓氏。</p>
+          <div class="input-row">
+            <input id="real-name" name="real-name" type="text" inputmode="text" autocomplete="name" maxlength="8" placeholder="請輸入姓名或綽號" required />
+            <button class="primary-button" type="submit">送交登記</button>
+          </div>
+          <fieldset class="residence-fieldset">
+            <legend>登記居住地</legend>
+            <p class="residence-help">請擇一州廳；部分姓氏會優先依州廳資料比對，其餘依通行改姓資料抽取。</p>
+            <div class="residence-layout">
+              <figure class="residence-map">
+                <img src="./assets/residence-map.jpg" alt="日治時期臺灣州廳示意圖，標示臺北州、新竹州、臺中州、臺南州、高雄州、花蓮港廳、臺東廳與澎湖廳。" />
+                <figcaption>昭和時期州廳區劃示意</figcaption>
+              </figure>
+              <div class="residence-options" role="radiogroup" aria-label="登記居住地">
+                <label class="residence-option"><input type="radio" name="residence" value="臺北州" /><span>臺北州</span><small>TAIBOKU</small></label>
+                <label class="residence-option"><input type="radio" name="residence" value="新竹州" /><span>新竹州</span><small>SHINCHIKU</small></label>
+                <label class="residence-option selected"><input type="radio" name="residence" value="臺中州" checked /><span>臺中州</span><small>TAICHŪ</small></label>
+                <label class="residence-option"><input type="radio" name="residence" value="臺南州" /><span>臺南州</span><small>TAINAN</small></label>
+                <label class="residence-option"><input type="radio" name="residence" value="高雄州" /><span>高雄州</span><small>TAKAO</small></label>
+                <label class="residence-option"><input type="radio" name="residence" value="花蓮港廳" /><span>花蓮港廳</span><small>KARENKO</small></label>
+                <label class="residence-option"><input type="radio" name="residence" value="臺東廳" /><span>臺東廳</span><small>TAITO</small></label>
+                <label class="residence-option"><input type="radio" name="residence" value="澎湖廳" /><span>澎湖廳</span><small>HŌKO</small></label>
+              </div>
+            </div>
+          </fieldset>
+          <p class="form-help">請輸入 2 至 8 個中文字；每次送交都會重新抽取一個可用的登記姓氏。</p>
         <p id="form-error" class="form-error" role="alert" aria-live="polite"></p>
       </form>
     </section>
@@ -56,6 +76,7 @@
         <span class="arrow" aria-hidden="true">→</span>
         <div><small>內地式登記名</small><strong id="converted-name"></strong></div>
       </div>
+      <div class="residence-result"><span>登記居住地</span><strong id="residence-name"></strong></div>
       <div class="welcome-copy">
         <p class="eyebrow">REGISTRATION COMPLETE</p>
         <h2 id="welcome-title"></h2>
