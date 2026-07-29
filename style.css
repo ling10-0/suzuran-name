@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;800;900&display=swap');
+
 :root {
   --ink: #2c2016;
   --brown: #3a2d21;
@@ -8,7 +10,7 @@
   --teal: #56b9b3;
   --gold: #d89537;
   --line: rgba(44, 32, 22, 0.72);
-  --serif: "SimSun", "宋體", "NSimSun", "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  --serif: "Noto Serif TC", "SimSun", "宋體", "NSimSun", "Source Han Serif TC", "PMingLiU", serif;
   --sans: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
 }
 
