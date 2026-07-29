@@ -8,7 +8,7 @@
   --teal: #56b9b3;
   --gold: #d89537;
   --line: rgba(44, 32, 22, 0.72);
-  --serif: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", "新細明體", serif;
+  --serif: "SimSun", "宋體", "NSimSun", "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
   --sans: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
 }
 
