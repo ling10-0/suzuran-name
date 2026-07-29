@@ -29,6 +29,28 @@ body {
   background-size: 7px 7px, auto;
 }
 
+.time-travel-banner {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 20px;
+  background: var(--red);
+  color: #fff8e5;
+  font-size: clamp(14px, 1.35vw, 18px);
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-align: center;
+}
+
+.time-travel-banner::before,
+.time-travel-banner::after {
+  content: "◆";
+  margin: 0 12px;
+  color: var(--gold);
+  font-size: .8em;
+}
+
 button, input { font: inherit; }
 button { cursor: pointer; }
 
@@ -186,6 +208,7 @@ form > label { display: block; margin-bottom: 10px; font-weight: 800; font-size:
 .residence-result strong { font-size: 20px; }
 
 .input-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; }
+.mobile-residence-submit { display: none; }
 
 input {
   min-width: 0;
@@ -268,6 +291,19 @@ footer p { margin: 0; }
 [hidden] { display: none !important; }
 
 @media (max-width: 660px) {
+  .time-travel-banner {
+    min-height: 38px;
+    padding: 7px 12px;
+    font-size: 13px;
+    letter-spacing: .035em;
+    white-space: nowrap;
+  }
+
+  .time-travel-banner::before,
+  .time-travel-banner::after {
+    margin: 0 7px;
+  }
+
   .residence-layout { grid-template-columns: 1fr; }
   .residence-map { width: min(210px, 100%); margin-inline: auto; }
   .residence-options { gap: 7px; }
@@ -297,7 +333,8 @@ footer p { margin: 0; }
   .stamp { width: 72px; font-size: 13px; }
   .input-row { grid-template-columns: 1fr; }
   input { height: 54px; font-size: 15px; }
-  .input-row .primary-button { width: 100%; }
+  .input-row .primary-button { display: none; }
+  .mobile-residence-submit { display: block; width: 100%; margin: -4px 0 18px; }
 
   .result-header span { font-size: 17px; }
   .name-conversion { padding: 22px 12px; grid-template-columns: 1fr; gap: 10px; }
